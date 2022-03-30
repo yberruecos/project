@@ -2,8 +2,8 @@ const express=require('express')
 const router=express.Router()
 const controller=require('./controller')
 
-router.get('/',(req,res)=>{
-    controller.availability()
+router.get('/:fixture',(req,res)=>{
+    controller.availability(req.params.fixture)
     .then((data)=>{
         res.status(200).send(data)
     })
