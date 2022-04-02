@@ -12,7 +12,7 @@ module.exports={
                 options = {
                     method: 'GET',
                     url: 'https://api-football-v1.p.rapidapi.com/v3/fixtures',
-                    params: {date: '2022-03-30'},
+                    params: {date: new Date().toISOString().slice(0, 10)},
                     headers: {
                       'x-rapidapi-host': 'api-football-v1.p.rapidapi.com',
                       'x-rapidapi-key': '7dc50b2d28mshee1f63dad49bce4p1a3006jsn17c4e0435928'
