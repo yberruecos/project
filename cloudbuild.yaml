@@ -7,6 +7,10 @@ steps:
     - 'MY_ENV_VAR=${_MY_ENV_VAR}'
 - name: "gcr.io/cloud-builders/gcloud"
   args: ["app", "deploy", "api.yaml", "-v", "$_GAE_VERSION"]
+<<<<<<< HEAD
 timeout: "1600s"
 options:
 logging: CLOUD_LOGGING_ONLY
+=======
+timeout: "1600s"
+>>>>>>> 5c473e870665180d0f897f06b7f7eed647e9c765
