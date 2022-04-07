@@ -8,3 +8,7 @@ steps:
 - name: "gcr.io/cloud-builders/gcloud"
   args: ["app", "deploy", "api.yaml", "-v", "$_GAE_VERSION"]
 timeout: "1600s"
+<<<<<<< HEAD
+=======
+logging: CLOUD_LOGGING_ONLY
+>>>>>>> 1ebea818b9cac570501ba93f8e6cd42d3a62cee4
