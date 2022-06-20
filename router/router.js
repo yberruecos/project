@@ -4,7 +4,7 @@ const neetworkWhatsApp=require('../components/whatsApp/neetwork')
 
 const router=(app)=>{
     app.use('/availability',neetworkInfo)
-    .use('/login',neetworkLogin)
+    // .use('/login',neetworkLogin)
     .use('/whatsapp',neetworkWhatsApp)
 }
 
