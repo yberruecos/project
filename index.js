@@ -26,7 +26,7 @@ router(app)
 
 app.use(cors())
 
-// app.use(express.static("."));
+app.use(express.static("."));
 
 app.listen(PORT,()=>{
     console.log(`Listen port ${PORT}`)
