@@ -8,14 +8,15 @@ const cors = require('cors');
 const router=require('./router/router')
 const app=express()
 const db=require('./db')
+const PORT=3000
 
 require('asset-require-hook')({
     extensions: ['jpg','png'],
     name: '[hash].[ext]'
 })
 
-dotenv.config()
-const {PORT,ENV}=process.env
+// dotenv.config()
+// const {PORT,ENV}=process.env
 
 if(ENV==='develoment'){
     console.log('ENV DEV')
