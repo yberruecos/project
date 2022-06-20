@@ -1,9 +1,9 @@
 const store=require('./store')
 
-// if (typeof localStorage === "undefined" || localStorage === null) {
-//     var LocalStorage = require('node-localstorage').LocalStorage;
-//     localStorage = new LocalStorage('./scratch');
-//   }
+if (typeof localStorage === "undefined" || localStorage === null) {
+    var LocalStorage = require('node-localstorage').LocalStorage;
+    localStorage = new LocalStorage('./scratch');
+  }
 
 const answers=[
     "<B>Pako:<B> Bienvenido \n\n gracias por comunicarte con\n 🍔@papikamedellín🍔 que quieres hacer? respondenos con:\n 1 🎫 Ver la carta \n 2 📝 Hacer el pedido",
