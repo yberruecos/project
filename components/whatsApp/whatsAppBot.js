@@ -1,9 +1,10 @@
 const store=require('./store')
+const redis=require('./redis')
 
-if (typeof localStorage === "undefined" || localStorage === null) {
-    var LocalStorage = require('node-localstorage').LocalStorage;
-    localStorage = new LocalStorage('./scratch');
-  }
+// if (typeof localStorage === "undefined" || localStorage === null) {
+//     var LocalStorage = require('node-localstorage').LocalStorage;
+//     localStorage = new LocalStorage('./scratch');
+//   }
 
 const answers=[
     "<B>Pako:<B> Bienvenido \n\n gracias por comunicarte con\n 🍔@papikamedellín🍔 que quieres hacer? respondenos con:\n 1 🎫 Ver la carta \n 2 📝 Hacer el pedido",
@@ -18,10 +19,13 @@ const answers=[
 
 module.exports= {
     getMessagge:(client)=>{
-        localStorage.clear()
+        // localStorage.clear()
     return async(message) => {
-            if(message.body && localStorage.getItem(message.from)){
-                const key=localStorage.getItem(message.from)
+            const key=await redis.list(message.from)
+             
+            if(message.body && key){
+                // const key=localStorage.getItem(message.from)
+                console.log(key,message.body)
 
                 if(key==0 && message.body==1){
                     try {
@@ -38,11 +42,13 @@ module.exports= {
                 if(key==0 && message.body==2){
                     const user=await store.findUser(message.from)
                     if(user){
-                        localStorage.setItem(message.from,100);
+                        //localStorage.setItem(message.from,100);
+                        await redis.upsert(message.from,100)
                         client.sendMessage(message.from,`Pako: Quieres que te enviemos el pedido a la direccion ${user.adress}, escribe:\n 1: Hacer pedido en la direccion \n 2: Indicar otra dirección`)
                         return false
                     }else {
-                        localStorage.setItem(message.from,2);
+                        //localStorage.setItem(message.from,2);
+                        await redis.upsert(message.from,2)
                         client.sendMessage(message.from,answers[2])
                         return false
                     }
@@ -77,26 +83,30 @@ module.exports= {
                     const user=await store.findUser(message.from)
                     user.metodo=message.body
                     const newMessage=await user.save()
-                    localStorage.setItem(message.from,101);
+                    //localStorage.setItem(message.from,101);
+                    await redis.upsert(message.from,101)
                     console.log(newMessage)
                     client.sendMessage(message.from,`Pako: La información de tu pedido es:\n Barrio y dirección: ${user.adress}\n Nombre de quien recibe: ${user.name}\n Pedido: ${user.pedido}\n Metodo de pago:${message.body}\n\n responde con 1 para confirmar o con 2 para cambiar.`);
                     return false
                 }
 
                 if(key==100 && message.body==1){
-                    localStorage.setItem(message.from,4);
+                    //localStorage.setItem(message.from,4);
+                    await redis.upsert(message.from,4)
                     client.sendMessage(message.from,answers[4])
                     return false
                 }
 
                 if(key==100 && message.body==2){
-                    localStorage.setItem(message.from,2);
+                    //localStorage.setItem(message.from,2);
+                    await redis.upsert(message.from,2)
                     client.sendMessage(message.from,answers[2])
                     return false
                 }
 
                 if(key==101 && message.body==1){
-                    localStorage.setItem(message.from,6);
+                    //localStorage.setItem(message.from,6);
+                    await redis.upsert(message.from,6)
                     client.sendMessage(message.from,answers[6])
                     return false
                 }
@@ -105,13 +115,14 @@ module.exports= {
                     const user=await store.findUser(message.from)
                     const newMessage=await user.delete()
                     console.log(newMessage)
-                    localStorage.setItem(message.from,0);
+                    //localStorage.setItem(message.from,0);
+                    await redis.upsert(message.from,0)
                     client.sendMessage(message.from,answers[0])
                     return false
                 }
 
                 if(key==answers.length-1){
-                    localStorage.removeItem(message.from)
+                    await redis.upsert(message.from,1000)
                     return false
                 }
 
@@ -122,16 +133,20 @@ module.exports= {
                 }
 
                 const keySave=parseInt(key)+1
-                localStorage.setItem(message.from,keySave);
+                //localStorage.setItem(message.from,keySave);
+                await redis.upsert(message.from,keySave)
                 client.sendMessage(message.from,answers[keySave])
             }
 
             if(message.body==='!ping') {
                 client.sendMessage(message.from, answers[0]);
-                localStorage.setItem(message.from, 0);
-                setTimeout(()=>{
-                    localStorage.removeItem(message.from)
-                    client.sendMessage(message.from, 'Pako: este chat se ha cerrado por inactividad.');
+                //localStorage.setItem(message.from, 0);
+                await redis.upsert(message.from,0)
+                setTimeout(async()=>{
+                    const closeChat=await redis.list(message.from)
+                    if(closeChat==0 || closeChat==null){
+                        client.sendMessage(message.from, 'Pako: este chat se ha cerrado por inactividad.');
+                    }
                 },200000)
             }
         }
