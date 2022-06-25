@@ -6,7 +6,9 @@ const qrImage = require('qr-image');
 
 module.exports={
     wconnect:()=>{
-        let client = new Client();
+        let client = new Client({
+            puppeteer: {headless: true, args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-extensions']}
+        });
         return new Promise((resolve,reject)=>{
             client.on('qr', (qr) => {
                 qrcode.generate(qr, {small: true},(qrcode)=>{
