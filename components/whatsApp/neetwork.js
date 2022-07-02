@@ -1,8 +1,6 @@
 const express = require('express')
 const router=express.Router()
 const controller=require('./controller.js')
-const { Client } = require('whatsapp-web.js');
-const client = new Client();
 
 
 router.get('/',async (req,res)=>{

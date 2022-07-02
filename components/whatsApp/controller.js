@@ -5,14 +5,15 @@ const qrImage = require('qr-image');
 
 module.exports={
     wconnect:()=>{
-        let client = new Client({
-            puppeteer: {
-                args: [
-                    '--no-sandbox'
-                ],
-            }
-        });
         return new Promise((resolve,reject)=>{
+            let client = new Client({
+                puppeteer: {
+                    args: [
+                        '--no-sandbox'
+                    ],
+                }
+            });
+            
             client.on('qr', (qr) => {
                 qrcode.generate(qr, {small: true},(qrcode)=>{
                     console.log(qrcode)
