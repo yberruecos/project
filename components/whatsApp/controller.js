@@ -7,13 +7,13 @@ module.exports={
     wconnect:()=>{
         return new Promise((resolve,reject)=>{
             let client = new Client({
-                puppeteer: {
-                    args: [
-                        '--no-sandbox'
-                    ],
-                }
+                puppeteer: { 
+                    headless: true, 
+                    args: ['--no-sandbox'] 
+                }, 
+                clientId: 'client-one'
             });
-            
+
             client.on('qr', (qr) => {
                 qrcode.generate(qr, {small: true},(qrcode)=>{
                     console.log(qrcode)
