@@ -8,7 +8,7 @@ const cors = require('cors');
 const router=require('./router/router')
 const app=express()
 const db=require('./db')
-const PORT=3000
+const PORT=8000
 
 // require('asset-require-hook')({
 //     extensions: ['jpg','png'],
