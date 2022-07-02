@@ -1,13 +1,16 @@
 const qrcode = require('qrcode-terminal');
 const { Client } = require('whatsapp-web.js');
-const client = new Client();
 const whatsAppBot=require('./whatsAppBot')
 const qrImage = require('qr-image');
 
 module.exports={
     wconnect:()=>{
         let client = new Client({
-            puppeteer: {headless: false, args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-extensions']}
+            puppeteer: {
+                args: [
+                    '--no-sandbox'
+                ],
+            }
         });
         return new Promise((resolve,reject)=>{
             client.on('qr', (qr) => {
